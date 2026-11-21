@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false, // Quita la banda roja de "Debug"
-      title: 'Cultivos La Planicie',
+      title: 'MIPE | La Planicie',
 
       // CONFIGURACIÓN DE IDIOMAS (Ahora funcionará porque importamos la librería)
       localizationsDelegates: const [

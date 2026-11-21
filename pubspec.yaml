@@ -38,6 +38,12 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_launcher_icons: ^0.13.1
 
+dependency_overrides:
+  # 2.6.0 switched to Objective-C FFI and requires a Dart native-assets hook
+  # that can hang Android release builds on Windows. 2.5.1 retains the
+  # compatible platform-channel implementation.
+  path_provider_foundation: 2.5.1
+
 # Configuración del ícono de la app (lo que se ve en el celular)
 flutter_launcher_icons:
   android: true

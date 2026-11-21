@@ -1,11 +1,3 @@
-// lib/aseguramiento_excel_service.dart
-// Servicio para generar Excel desde plantilla XLSX (Aseguramiento de plaguicidas).
-// Requisitos pubspec.yaml:
-//   archive: ^3.3.0
-//   path_provider: ^2.0.0
-//   open_filex: ^3.4.0
-// Asegúrate de tener la plantilla en assets y declarada en pubspec.yaml.
-
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/services.dart' show rootBundle, ByteData;
@@ -25,9 +17,6 @@ class AseguramientoExcelService {
   }
 
   /// Genera el reporte a partir de la plantilla XLSX.
-  /// Devuelve la ruta completa del archivo generado.
-  /// onProgress recibe valores entre 0.0 y 1.0.
-  /// cancelToken permite abortar la operación desde la UI.
   static Future<String> generarReporte(
     List<dynamic> registros, {
     String nombreArchivo = 'General',

@@ -1,5 +1,4 @@
--- Gestión de opciones desplegables del módulo de aseguramiento y MIPE.
--- Ejecutar una vez en Supabase SQL Editor.
+-- Gestión de opciones desplegables del módulo de aseguramiento.
 begin;
 
 create or replace function public.gestionar_opciones_listas_admin(

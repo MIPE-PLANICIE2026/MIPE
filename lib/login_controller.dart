@@ -41,9 +41,9 @@ class LoginController extends GetxController {
       !esVisitante || loggedInUser.value?['puede_insertar'] == true;
 
   // Ajusta tu URL y apiKey
-  final String supabaseUrl = 'https://dakdyrgfwimwytotkzca.supabase.co';
+  final String supabaseUrl = 'https://jnqncjztigaxwirqhqcc.supabase.co';
   final String apiKey =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRha2R5cmdmd2ltd3l0b3RremNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNDkxMzUsImV4cCI6MjA5MTcyNTEzNX0.C9p5hPtQ95ZVRS0yzwfKs1O_kKyR4ayxvQlxcXoq1oE';
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpucW5janp0aWdheHdpcnFocWNjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUyMTg1MjgsImV4cCI6MjExMDc5NDUyOH0.30VTZXiejMbnrgsoYtGkKGEx1WzwYrRv_ybhOz-hfWE';
 
   @override
   void onInit() {
@@ -239,11 +239,15 @@ class LoginController extends GetxController {
       isLoading.value = true;
       message.value = '';
 
-      final url = Uri.parse(
-        '$supabaseUrl/rest/v1/persona?identificacion=eq.$identificacion&password=eq.$password&select=*',
+      final baseUri = Uri.parse(supabaseUrl);
+      final url = baseUri.replace(
+        path: '${baseUri.path}/rest/v1/persona',
+        queryParameters: {
+          'identificacion': 'eq.${identificacion.trim()}',
+          'password': 'eq.$password',
+          'select': 'identificacion,nombres,lectura,admin',
+        },
       );
-
-      debugPrint('Request login: $url');
 
       final http.Response response;
       try {
@@ -268,8 +272,6 @@ class LoginController extends GetxController {
       }
 
       debugPrint('Status: ${response.statusCode}');
-      debugPrint('Body: ${response.body}');
-
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data.isNotEmpty) {
@@ -297,10 +299,21 @@ class LoginController extends GetxController {
 
           Get.offAllNamed('/home');
         } else {
-          message.value = 'Usuario o contraseña incorrectos';
+          message.value =
+              'Identificación o contraseña no coinciden con una cuenta activa en Supabase.';
+          debugPrint(
+            'Login sin coincidencias: id=${identificacion.trim()}, '
+            'respuesta=0 filas',
+          );
         }
       } else {
-        message.value = 'Error servidor (${response.statusCode})';
+        message.value = switch (response.statusCode) {
+          401 => 'Supabase rechazó la clave pública configurada (401).',
+          403 => 'Supabase no permite leer public.persona (403/RLS).',
+          404 =>
+            'No se encontró public.persona en el proyecto configurado (404).',
+          _ => 'Error servidor (${response.statusCode})',
+        };
       }
     } catch (e, st) {
       message.value = 'Error de conexión: ${e.toString()}';
@@ -321,7 +334,9 @@ class LoginController extends GetxController {
       'offline_login_${identificacion.trim()}';
 
   String _hashPassword(String identificacion, String password) =>
-      sha256.convert(utf8.encode('${identificacion.trim()}|$password|mipe')).toString();
+      sha256
+          .convert(utf8.encode('${identificacion.trim()}|$password|mipe'))
+          .toString();
 
   Future<void> _guardarCredencialOffline(
     Map<String, dynamic> userMap,
@@ -612,7 +627,10 @@ class LoginController extends GetxController {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('user_data', json.encode(actualizado));
       if (recordarUsuario.value) {
-        await guardarUsuarioRecordado(identificacionActual, nuevaPasswordLimpia);
+        await guardarUsuarioRecordado(
+          identificacionActual,
+          nuevaPasswordLimpia,
+        );
       }
       return true;
     } catch (e, st) {

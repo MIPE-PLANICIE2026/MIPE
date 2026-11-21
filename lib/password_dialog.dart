@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-/// Pide una contraseña en un diálogo. Devuelve el texto o null si se cancela.
-///
-/// El controlador vive dentro del propio widget y se libera en dispose(),
-/// cuando el diálogo ya terminó su animación de cierre. Así se evita la
-/// pantalla roja "TextEditingController was used after being disposed".
 Future<String?> pedirPasswordDialog({
   String titulo = 'Confirma tu contraseña',
   String etiqueta = 'Contraseña actual',

@@ -1,7 +1,6 @@
 -- Firmas del formulario de Mapa de bloques (Registro MIPE):
 --   * quien registra (usuario que llena el formulario)
 --   * administrador que autoriza
--- Reemplazan a los campos de facilitadores. Misma lógica que almacén.
 -- Requiere haber ejecutado supabase/firmas_digitales.sql.
 
 alter table public.aspersiones

@@ -1,4 +1,4 @@
--- Acceso temporal para visitantes. Ejecutar en el SQL Editor de Supabase.
+-- Acceso temporal para visitantes.
 begin;
 
 create schema if not exists extensions;
@@ -137,8 +137,7 @@ begin
 end;
 $$;
 
--- Postgres no permite cambiar el tipo de retorno con CREATE OR REPLACE.
--- Se elimina solo esta función del módulo de visitantes antes de recrearla.
+
 drop function if exists public.configurar_visitantes_admin(text,text,boolean,boolean,boolean,boolean);
 
 create function public.configurar_visitantes_admin(

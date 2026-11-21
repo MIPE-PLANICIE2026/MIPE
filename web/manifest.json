@@ -1,11 +1,11 @@
 {
-    "name": "flutter_application_1",
-    "short_name": "flutter_application_1",
+    "name": "MIPE La Planicie",
+    "short_name": "MIPE",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#FFFFFF",
+    "theme_color": "#008DC5",
+    "description": "Sistema de control MIPE de La Planicie.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
